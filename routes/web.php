@@ -84,3 +84,17 @@ Route::delete('/allocate/{id}', [AllocateController::class, 'destroy'])->name('a
 
 
 
+
+
+
+// allocate Routes
+Route::get('/allocate/create', [AllocateController::class, 'create'])->name('allocate.create');
+Route::get('/allocate/index', [AllocateController::class, 'index'])->name('allocate.index');
+Route::post('/allocate/store', [AllocateController::class, 'store'])->name('allocate.store');
+Route::post('/allocate/store', [AllocateController::class, 'store'])->name('allocate.store');
+Route::get('/allocate/{id}/edit', [AllocateController::class, 'edit'])->name('allocate.edit');
+Route::put('/allocate/{id}', [AllocateController::class, 'update'])->name('allocate.update');
+Route::delete('/allocate/{id}', [AllocateController::class, 'destroy'])->name('allocate.destroy');
+
+
+

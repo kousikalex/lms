@@ -511,7 +511,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">Tables Border Colors</h5>
+                            <h5 class="card-title mb-0">Course Table</h5>
                             <a href="{{ route('course.create') }}" class="btn btn-primary-600 radius-8 px-20 py-11">
                                 Create Course
                             </a>
