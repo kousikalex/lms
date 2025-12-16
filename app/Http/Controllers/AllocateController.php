@@ -51,6 +51,23 @@ class AllocateController extends Controller
 
         // If you add name, email, contact_number later — include them here
     ]);
+    $college = College::find($request->college_id);
+    $collegeName = preg_replace('/\s+/', '', strtolower($college->collegename));
+
+    // 🔥 Get last batch number for this college
+    $lastRecord = Allocate::where('college_id', $request->college_id)
+                          ->orderBy('batch_number', 'DESC')
+                          ->first();
+
+    if ($lastRecord) {
+        $batchNumber = $lastRecord->batch_number + 1;
+    } else {
+        $batchNumber = 1; // first batch for this college
+    }
+
+    // 🔥 Generate custom code
+    $collegecode = $collegeName . 'NMbatch-' . $batchNumber;
+
 
     Allocate::create([
         'college_id'    => $request->college_id,
@@ -59,12 +76,13 @@ class AllocateController extends Controller
         'year_id'       => $request->year_id,
         'section_id'    => $request->section_id,
         'trainer_id'    => $request->trainer_id,
-
         'from_date'     => $request->from_date,
         'to_date'       => $request->to_date,
-
         'description'   => $request->description,
+         'batch_number'  => $batchNumber,
+        'college_code'   => $collegecode,
     ]);
+
 
     return redirect()->route('allocate.index')
                      ->with('success', 'Student details added successfully!');

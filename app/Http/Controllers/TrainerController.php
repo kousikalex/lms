@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Models\Trainer;
+use App\Models\allocate;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class TrainerController extends Controller
 {
@@ -126,4 +128,36 @@ public function destroy($id)
 }
 
 
+
+public function work()
+{
+    $trainer_id = session('trainer_id');
+
+    $today = Carbon::today()->format('Y-m-d');
+
+    // UPCOMING: Not started yet
+    $upcoming = Allocate::where('trainer_id', $trainer_id)
+        ->where('status', 0)
+        ->where('from_date', '>', $today)
+        ->get();
+
+
+    // IN-PROGRESS: Currently running
+    $inProgress = Allocate::where('trainer_id', $trainer_id)
+        ->where('status', 0)
+        ->where('from_date', '<=', $today)
+        ->where('to_date', '>=', $today)
+        ->get();
+    // dd($inProgress);
+
+
+    // COMPLETED: Finished work
+    $completed = Allocate::where('trainer_id', $trainer_id)
+        ->where('status', 1)
+        ->get();
+    // dd($completed);
+
+
+    return view('trainer.trainerwork', compact('upcoming', 'inProgress', 'completed'));
+}
 }

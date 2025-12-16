@@ -19,13 +19,15 @@ class Allocate extends Model
         'description',
         'from_date',
         'to_date',
+        'batch_number',
+        'college_code'
     ];
 
 
      public function college()
-{
-    return $this->belongsTo(College::class, 'college_id');
-}
+        {
+            return $this->belongsTo(College::class, 'college_id');
+        }
 
 public function course()
 {

@@ -118,6 +118,12 @@
                         <span>Calendar</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('trainer.work') }}">
+                        <iconify-icon icon="solar:calendar-outline" class="menu-icon"></iconify-icon>
+                        <span>Work Module</span>
+                    </a>
+                </li>
 
 
                 {{-- Blog --}}

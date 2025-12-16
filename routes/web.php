@@ -23,7 +23,7 @@ use App\Http\Controllers\AdminAuthController;
 //     return view('admin/index');
 // });
 
-// LOGIN 
+// LOGIN
 Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AdminAuthController::class, 'login'])->name('login.submit');
 Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
@@ -113,16 +113,16 @@ Route::delete('/allocate/{id}', [AllocateController::class, 'destroy'])->name('a
 
 
 
+// Trainer
+
 // login
 Route::get('/trainer', [UserController::class, 'create'])->name('trainer');
 Route::post('/trainer/login', [UserController::class, 'login'])->name('trainer.login');
-
-
 // trainer attendance routes
 Route::get('/trainer/clock', [AttendanceController::class, 'clock'])->name('trainer.clock');
 Route::post('/trainer/punch-in', [AttendanceController::class, 'punchIn'])->name('trainer.punchIn');
 Route::post('/trainer/punch-out', [AttendanceController::class, 'punchOut'])->name('trainer.punchOut');
-
 // trainer attendance view route
 Route::get('/trainer/calendar', [AttendanceController::class, 'calendar'])->name('trainer.calendar');
-
+// Work Module
+Route::get('/trainer/work', [TrainerController::class, 'work'])->name('trainer.work');
