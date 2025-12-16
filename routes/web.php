@@ -8,6 +8,8 @@ use App\Http\Controllers\subcoureseController;
 use App\Http\Controllers\CollegeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AllocateController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AttendanceController;
 
 
 
@@ -87,14 +89,17 @@ Route::delete('/allocate/{id}', [AllocateController::class, 'destroy'])->name('a
 
 
 
-// allocate Routes
-Route::get('/allocate/create', [AllocateController::class, 'create'])->name('allocate.create');
-Route::get('/allocate/index', [AllocateController::class, 'index'])->name('allocate.index');
-Route::post('/allocate/store', [AllocateController::class, 'store'])->name('allocate.store');
-Route::post('/allocate/store', [AllocateController::class, 'store'])->name('allocate.store');
-Route::get('/allocate/{id}/edit', [AllocateController::class, 'edit'])->name('allocate.edit');
-Route::put('/allocate/{id}', [AllocateController::class, 'update'])->name('allocate.update');
-Route::delete('/allocate/{id}', [AllocateController::class, 'destroy'])->name('allocate.destroy');
+
+// login
+Route::get('/trainer', [UserController::class, 'create'])->name('trainer');
+Route::post('/trainer/login', [UserController::class, 'login'])->name('trainer.login');
 
 
+// trainer attendance routes
+Route::get('/trainer/clock', [AttendanceController::class, 'clock'])->name('trainer.clock');
+Route::post('/trainer/punch-in', [AttendanceController::class, 'punchIn'])->name('trainer.punchIn');
+Route::post('/trainer/punch-out', [AttendanceController::class, 'punchOut'])->name('trainer.punchOut');
+
+// trainer attendance view route
+Route::get('/trainer/calendar', [AttendanceController::class, 'calendar'])->name('trainer.calendar');
 
