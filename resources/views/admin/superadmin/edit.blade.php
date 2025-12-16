@@ -1,6 +1,6 @@
-@extends('layout.admin')
+@extends('layout.superadmin')
 
-@section('title', 'Dashboard')
+@section('title', 'Admin Management')
 
 @section('content')
 
@@ -478,210 +478,84 @@
                                             Setting</a>
                                     </li>
                                     <li>
-    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
-       href="#"
-       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-
-        <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon>
-        Log Out
-    </a>
-
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-        @csrf
-    </form>
-</li>
-
+                                        <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
+                                            href="javascript:void(0)">
+                                            <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon>
+                                            Log Out</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
-                        <!-- Profile dropdown end -->
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="dashboard-main-body">
-            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-                <h6 class="fw-semibold mb-0">Basic Table</h6>
-                <ul class="d-flex align-items-center gap-2">
-                    <li class="fw-medium">
-                        <a href="index.html" class="d-flex align-items-center gap-1 hover-text-primary">
-                            <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
-                            Dashboard
-                        </a>
-                    </li>
-                    <li>-</li>
-                    <li class="fw-medium">Basic Table</li>
-                </ul>
-            </div>
 
-            <div class="row gy-4">
+    <!-- Page Header -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+        <h6 class="fw-semibold mb-0">Edit Admin</h6>
+        <ul class="d-flex align-items-center gap-2">
+            <li class="fw-medium">
+                <a href="{{ url('/') }}" class="d-flex align-items-center gap-1 hover-text-primary">
+                    <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
+                    Dashboard
+                </a>
+            </li>
+            <li>-</li>
+            <li class="fw-medium">Edit Admin</li>
+        </ul>
+    </div>
 
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">Tables Border Colors</h5>
-                            <a href="{{ route('trainer.create') }}" class="btn btn-primary-600 radius-8 px-20 py-11">
-                                Create Trainer
-                            </a>
+    <!-- Form Section -->
+    <div class="row">
+        <div class="col-xl-8 col-lg-9">
 
+            <!-- Transparent Card -->
+            <div class="card wowdash-card bg-transparent border-0 shadow-none">
+                <div class="card-body p-0">
+
+                    <form method="POST" action="{{ route('superadmin.update', $admin->id) }}">
+                        @csrf
+                        @method('PUT')
+
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="username"
+                                value="{{ old('username', $admin->username) }}"
+                                class="form-control"
+                                placeholder="Enter Username">
                         </div>
 
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table border-primary-table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">
-
-                                                <label class="form-check-label"> S.no </label>
-                                            </th>
-                                            <th scope="col">Image</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Phone</th>
-                                            <th scope="col">Experience</th>
-                                            <th scope="col">Mode</th>
-                                            <th scope="col">action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($data ?? [] as $item)
-
-                                            <tr>
-
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>
-                                                    @if ($item->file_upload)
-                                                        <img src="{{ asset('storage/' . $item->file_upload) }}"
-                                                            alt="Trainer Image" width="60" height="60"
-                                                            style="object-fit: cover; border-radius: 8px;">
-                                                    @else
-                                                        No Image
-                                                    @endif
-                                                </td>
-
-                                                <td>{{ $item->first_name }}</td>
-                                                <td>{{ $item->email }}</td>
-                                                <td>{{ $item->phone }}</td>
-                                                <td>{{ $item->experience }}</td>
-                                                <td>{{ $item->trainer_type }}</td>
-                                                <td>
-                                                    <a href="{{ route('trainer.edit', $item->id) }}"
-                                                        class="btn btn-sm btn-info">Edit</a>
-
-                                                    <form action="{{ route('trainer.destroy', $item->id) }}"
-                                                        method="POST" style="display: inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                            onclick="return confirm('Are you sure you want to delete this trainer?')">Delete</button>
-                                                    </form>
-                                                </td>
-
-                                            </tr>
-                                        @endforeach
-
-                                        <tr>
-                        <td>
-                          <div
-                            class="form-check style-check d-flex align-items-center"
-                          >
-                            <input class="form-check-input" type="checkbox" />
-                            <label class="form-check-label"> 02 </label>
-                          </div>
-                        </td>
-                        <td>5986124445445</td>
-                        <td>27 Mar 2024</td>
-                        <td>
-                          <span
-                            class="bg-danger-focus text-danger-main px-32 py-4 rounded-pill fw-medium text-sm"
-                            >Rejected</span
-                          >
-                        </td>
-                        <td>$20,000.00</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div
-                            class="form-check style-check d-flex align-items-center"
-                          >
-                            <input class="form-check-input" type="checkbox" />
-                            <label class="form-check-label"> 03 </label>
-                          </div>
-                        </td>
-                        <td>5986124445445</td>
-                        <td>27 Mar 2024</td>
-                        <td>
-                          <span
-                            class="bg-success-focus text-success-main px-32 py-4 rounded-pill fw-medium text-sm"
-                            >Completed</span
-                          >
-                        </td>
-                        <td>$20,000.00</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div
-                            class="form-check style-check d-flex align-items-center"
-                          >
-                            <input class="form-check-input" type="checkbox" />
-                            <label class="form-check-label"> 04 </label>
-                          </div>
-                        </td>
-                        <td>5986124445445</td>
-                        <td>27 Mar 2024</td>
-                        <td>
-                          <span
-                            class="bg-success-focus text-success-main px-32 py-4 rounded-pill fw-medium text-sm"
-                            >Completed</span
-                          >
-                        </td>
-                        <td>$20,000.00</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div
-                            class="form-check style-check d-flex align-items-center"
-                          >
-                            <input class="form-check-input" type="checkbox" />
-                            <label class="form-check-label"> 05 </label>
-                          </div>
-                        </td>
-                        <td>5986124445445</td>
-                        <td>27 Mar 2024</td>
-                        <td>
-                          <span
-                            class="bg-success-focus text-success-main px-32 py-4 rounded-pill fw-medium text-sm"
-                            >Completed</span
-                          >
-                        </td>
-                        <td>$20,000.00</td>
-                      </tr> 
-                                    </tbody>
-                                </table>
-                            </div>
+                        <!-- Email -->
+                        <div class="mb-4">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email"
+                                value="{{ old('email', $admin->email) }}"
+                                class="form-control"
+                                placeholder="Enter Email Address">
                         </div>
-                    </div>
-                    <!-- card end -->
+
+                        <!-- Button -->
+                        <button class="btn btn-primary-600 mt-3">
+                            Update Admin
+                        </button>
+
+                    </form>
+
                 </div>
-
             </div>
+
         </div>
+    </div>
+
+</div>
 
 
-        <footer class="d-footer">
-            <div class="row align-items-center justify-content-between">
-                <div class="col-auto">
-                    <p class="mb-0">© 2024 WowDash. All Rights Reserved.</p>
-                </div>
-                <div class="col-auto">
-                    <p class="mb-0">
-                        Made by <span class="text-primary-600">wowtheme7</span>
-                    </p>
-                </div>
-            </div>
-        </footer>
+
     </main>
 
+    @endsection
 
-@endsection

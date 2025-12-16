@@ -8,10 +8,13 @@ use App\Http\Controllers\subcoureseController;
 use App\Http\Controllers\CollegeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AllocateController;
+// <<<<<<< Updated upstream
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AttendanceController;
 
 
+use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\AdminAuthController;
 
 
 
@@ -20,8 +23,28 @@ use App\Http\Controllers\AttendanceController;
 //     return view('admin/index');
 // });
 
+// LOGIN 
+Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AdminAuthController::class, 'login'])->name('login.submit');
+Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', [adminController::class, 'index'])->name('dashboard');
+/* SUPERADMIN */
+Route::middleware(['auth:admin', 'role:superadmin'])
+    ->prefix('superadmin')
+    ->group(function () {
+
+        Route::get('/admins', [SuperAdminController::class, 'index'])->name('superadmin.index');
+        Route::get('/admins/create', [SuperAdminController::class, 'create'])->name('superadmin.create');
+        Route::post('/admins', [SuperAdminController::class, 'store'])->name('superadmin.store');
+        Route::get('/admins/{id}/edit', [SuperAdminController::class, 'edit'])->name('superadmin.edit');
+        Route::put('/admins/{id}', [SuperAdminController::class, 'update'])->name('superadmin.update');
+        Route::delete('/admins/{id}', [SuperAdminController::class, 'destroy'])->name('superadmin.destroy');
+});
+
+/* ADMIN */
+Route::middleware(['auth:admin', 'role:admin'])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+});
 
 
 // Trainer Routes
