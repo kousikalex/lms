@@ -91,4 +91,7 @@ public function punchOut(Request $request)
         return view('trainer.calendar', compact('attendance'));
     }
 
+
+    
+
 }

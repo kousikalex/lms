@@ -16,6 +16,7 @@ class Student extends Model
         'department_id',
         'year_id',
         'section_id',
+        'batch_number',
     ];
 
     public function college()

@@ -27,7 +27,7 @@ class StudentController extends Controller
         $department = Department::all();
         $year = Year::all();
         $section = Section::all();
-        // dd($college);
+        // dd($section);
         return view('admin.student.create',compact('courses','college','department','year','section'));
     }
 
@@ -42,10 +42,33 @@ class StudentController extends Controller
         'section_id'     => 'required|exists:section,id',
         'students_file' => 'required|file|mimes:xlsx,xls,csv',
     ]);
+    $college = College::find($request->college_id);
+    $department = Department::find($request->department_id);
+    $year = Year::find($request->year_id);
+
+    // remove spaces + make lowercase (college code)
+    $collegeName = preg_replace('/\s+/', '', strtolower($college->collegename));
+    $departmentName = preg_replace('/\s+/', '', strtolower($department->name));
+    $yearName = preg_replace('/\s+/', '', strtolower($year->name));
+
+    // 🔥 Find last batch for SAME college + department + year
+    $lastRecord = Student::where('college_id', $request->college_id)
+        ->where('department_id', $request->department_id)
+        ->where('year_id', $request->year_id)
+        ->orderBy('batch_number', 'DESC')
+        ->first();
+
+    // 🔥 Increase batch count automatically
+    $batchNumber = $lastRecord ? $lastRecord->batch_number + 1 : 1;
+
+    // 🔥 Generate the new batch code
+    $batchCode = "{$collegeName}_{$departmentName}_{$yearName}";
+    $collegecode = strtoupper($batchCode);
+    // dd($collegecode);
 
     // Import students from Excel
     Excel::import(
-        new StudentsImport($request->college_id, $request->course_id,$request->department_id, $request->year_id, $request->section_id),
+        new StudentsImport($request->college_id, $request->course_id,$request->department_id, $request->year_id, $request->section_id,$collegecode),
         $request->file('students_file')
     );
         return redirect()->route('student.index')->with('success', 'College added successfully!');

@@ -1,8 +1,10 @@
-@extends('layout.admin')
+@extends('layout.trainer    ')
 
 @section('title', 'Dashboard')
 
 @section('content')
+
+
 
     <main class="dashboard-main">
         <div class="navbar-header">
@@ -508,157 +510,81 @@
 
             <div class="row gy-4">
 
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">Tables Border Colors</h5>
-                            <a href="{{ route('allocate.create') }}" class="btn btn-primary-600 radius-8 px-20 py-11">
-                                Create Student
-                            </a>
+                <form class="row gy-3 needs-validation" action="{{ route('student.store') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
 
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <strong>Please fix the errors below:</strong>
                         </div>
+                    @endif
+                    <div class="col-md-6">
+                        <label class="form-label">From Date</label>
+                        <input type="date" name="from_date" id="from_date"
+                            class="form-control @error('from_date') is-invalid @enderror" value="{{ old('from_date') }}">
 
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table border-primary-table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">
-                                                <label class="form-check-label"> S.no </label>
-                                            </th>
-                                            <th scope="col">Trainer Name</th>
-                                            <th scope="col">Course</th>
-                                            {{-- <th scope="col">College</th>
-                                            <th scope="col">Dept/Year</th> --}}
-                                            <th scope="col">Batch</th>
-                                            <th scope="col">F/T  Date</th>
-                                            <th scope="col">action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($data as $item)
-                                            <?php
-                                            // dd($item);
-                                            ?>
-                                            <tr>
-
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item->trainer->first_name ?? 'N/A' }}  - {{ $item->trainer->trainer_type ?? 'N/A' }}</td>
-                                                <td>{{ $item->course->name ?? 'N/A' }}</td>
-                                                {{-- <td>{{ $item->college->collegename ?? 'N/A' }}</td>
-                                                 <td>
-                                                    {{ $item->department->name ?? 'N/A' }}
-                                                    /
-                                                    {{ $item->year->name ?? 'N/A' }}
-                                                </td> --}}
-                                                <td>{{ $item->batch_name ?? 'N/A' }}</td>
-
-
-                                                <td>{{ $item->from_date }} / {{ $item->to_date }} </td>
-
-
-
-                                                <td>
-                                                    <a href="{{ route('allocate.edit', $item->id) }}"
-                                                        class="btn btn-sm btn-info">Edit</a>
-
-                                                    <form action="{{ route('allocate.destroy', $item->id) }}"
-                                                        method="POST" style="display: inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                            onclick="return confirm('Are you sure you want to delete this trainer?')">Delete</button>
-                                                    </form>
-                                                </td>
-
-
-                                            </tr>
-                                        @endforeach
-
-                                        {{-- <tr>
-                        <td>
-                          <div
-                            class="form-check style-check d-flex align-items-center"
-                          >
-                            <input class="form-check-input" type="checkbox" />
-                            <label class="form-check-label"> 02 </label>
-                          </div>
-                        </td>
-                        <td>5986124445445</td>
-                        <td>27 Mar 2024</td>
-                        <td>
-                          <span
-                            class="bg-danger-focus text-danger-main px-32 py-4 rounded-pill fw-medium text-sm"
-                            >Rejected</span
-                          >
-                        </td>
-                        <td>$20,000.00</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div
-                            class="form-check style-check d-flex align-items-center"
-                          >
-                            <input class="form-check-input" type="checkbox" />
-                            <label class="form-check-label"> 03 </label>
-                          </div>
-                        </td>
-                        <td>5986124445445</td>
-                        <td>27 Mar 2024</td>
-                        <td>
-                          <span
-                            class="bg-success-focus text-success-main px-32 py-4 rounded-pill fw-medium text-sm"
-                            >Completed</span
-                          >
-                        </td>
-                        <td>$20,000.00</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div
-                            class="form-check style-check d-flex align-items-center"
-                          >
-                            <input class="form-check-input" type="checkbox" />
-                            <label class="form-check-label"> 04 </label>
-                          </div>
-                        </td>
-                        <td>5986124445445</td>
-                        <td>27 Mar 2024</td>
-                        <td>
-                          <span
-                            class="bg-success-focus text-success-main px-32 py-4 rounded-pill fw-medium text-sm"
-                            >Completed</span
-                          >
-                        </td>
-                        <td>$20,000.00</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div
-                            class="form-check style-check d-flex align-items-center"
-                          >
-                            <input class="form-check-input" type="checkbox" />
-                            <label class="form-check-label"> 05 </label>
-                          </div>
-                        </td>
-                        <td>5986124445445</td>
-                        <td>27 Mar 2024</td>
-                        <td>
-                          <span
-                            class="bg-success-focus text-success-main px-32 py-4 rounded-pill fw-medium text-sm"
-                            >Completed</span
-                          >
-                        </td>
-                        <td>$20,000.00</td>
-                      </tr> --}}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                            @error('from_date')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                     </div>
-                    <!-- card end -->
-                </div>
 
+                    <div class="col-md-6">
+                        <label class="form-label">Select Batch</label>
+                        <select name="batch_name" id="batch_name" class="form-control">
+                            <option value="">-- Select Batch --</option>
+                            @foreach ($batchNames as $batch)
+                                <option value="{{ $batch }}">{{ $batch }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Department</label>
+                        <input type="text" id="department_name" class="form-control" readonly>
+                        <input type="hidden" name="department_id" id="department_id">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Year</label>
+                        <input type="text" id="year_name" class="form-control" readonly>
+                        <input type="hidden" name="year_id" id="year_id">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Section</label>
+                        <input type="text" id="section_name" class="form-control" readonly>
+                        <input type="hidden" name="section_id" id="section_id">
+                    </div>
+
+
+
+
+
+
+                </form>
+
+
+                <div id="studentListContainer" class="col-md-12 mt-4" style="display:none;">
+                    <br>
+                    <br>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Student Name</th>
+                                {{-- <th>Register No</th> --}}
+                                <th>Attendance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentList"></tbody>
+                    </table>
+
+                    <button type="button" id="submitAttendance" class="btn btn-success">
+                        Submit Attendance
+                    </button>
+
+                </div>
             </div>
         </div>
 
@@ -676,6 +602,129 @@
             </div>
         </footer>
     </main>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script>
+$("#batch_name").change(function () {
+
+    let batch = $(this).val();
+    let fromDate = $("#from_date").val();
+
+    if (!batch || !fromDate) {
+        alert("Please select From Date and Batch");
+        return;
+    }
+
+    // RESET UI
+    $("#department_name, #year_name, #section_name").val('');
+    $("#department_id, #year_id, #section_id").val('');
+    $("#studentList").html("");
+    $("#studentListContainer").hide();
+    $("#attendanceMessage").remove();
+
+    // ----------------------------
+    // FETCH BATCH DETAILS
+    // ----------------------------
+    $.get("/get-batch-details", {
+        batch_name: batch
+    }, function (data) {
+
+        $("#department_name").val(data.department_name);
+        $("#year_name").val(data.year_name);
+        $("#section_name").val(data.section_name);
+
+        $("#department_id").val(data.department_id);
+        $("#year_id").val(data.year_id);
+        $("#section_id").val(data.section_id);
+    });
+
+    // ----------------------------
+    // FETCH STUDENTS + CHECK ATTENDANCE
+    // ----------------------------
+    $.get("/get-batch-students", {
+        batch_name: batch,
+        attendance_date: fromDate
+    }, function (response) {
+
+        // ❌ Attendance already done
+        if (response.already_done) {
+            $("#studentListContainer").hide();
+            $("<div id='attendanceMessage' class='alert alert-warning mt-3'>Attendance already done for this date.</div>")
+                .insertAfter("#studentListContainer");
+            return;
+        }
+
+        // ✅ Show students
+        let html = "";
+        let count = 1;
+
+        response.students.forEach(function (student) {
+            html += `
+                <tr>
+                    <td>${count++}</td>
+                    <td>${student.name}</td>
+                    <td>
+                        <select name="attendance[${student.id}]" class="form-control">
+                            <option value="present">Present</option>
+                            <option value="absent">Absent</option>
+                        </select>
+                    </td>
+                </tr>
+            `;
+        });
+
+        $("#studentList").html(html);
+        $("#studentListContainer").show();
+    });
+
+});
+</script>
+
+
+    <script>
+        $("#submitAttendance").click(function() {
+
+            let batchName = $("#batch_name").val();
+            let date = $("input[name='from_date']").val();
+
+            if (!batchName || !date) {
+                alert("Please select date and batch");
+                return;
+            }
+
+            let attendanceData = [];
+
+            $("#studentList tr").each(function() {
+                let studentId = $(this).find("select").attr("name").match(/\d+/)[0];
+                let attendance = $(this).find("select").val();
+
+                attendanceData.push({
+                    student_id: studentId,
+                    attendance: attendance
+                });
+            });
+
+            $.ajax({
+                url: "{{ route('attendance.store') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    batch_name: batchName,
+                    attendance_date: date,
+                    attendance: attendanceData
+                },
+                success: function(response) {
+                    alert(response.message);
+                },
+                error: function() {
+                    alert("Something went wrong");
+                }
+            });
+
+        });
+    </script>
+
 
 
 @endsection

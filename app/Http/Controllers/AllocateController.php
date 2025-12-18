@@ -18,6 +18,7 @@ class AllocateController extends Controller
       public function index()
     {
         $data = Allocate::with(['college', 'course','department','year','trainer'])->get();
+        // dd($data);
         return view('admin.allocate.index',compact('data'));
     }
 
@@ -32,6 +33,35 @@ class AllocateController extends Controller
         // dd($trainer);
         return view('admin.allocate.create',compact('courses','college','department','year','section','trainer'));
     }
+
+    public function getBatches($college_id)
+{
+    $batches = Student::where('college_id', $college_id)
+                ->select('batch_number')
+                ->distinct()
+                ->get();
+
+    return response()->json($batches);
+}
+
+
+public function getBatchInfo($batch)
+{
+    $student = Student::where('batch_number', $batch)->first();
+
+  return response()->json([
+    'department_id' => $student->department_id,
+    'year_id'       => $student->year_id,
+    'section_id'    => $student->section_id,
+
+    'department_name' => $student->department->name,
+    'year_name'       => $student->year->name,
+    'section_name'    => $student->section->name,
+    'batch_name' => $student->batch_number
+]);
+
+}
+
 
    public function store(Request $request)
 {
@@ -51,22 +81,6 @@ class AllocateController extends Controller
 
         // If you add name, email, contact_number later — include them here
     ]);
-    $college = College::find($request->college_id);
-    $collegeName = preg_replace('/\s+/', '', strtolower($college->collegename));
-
-    // 🔥 Get last batch number for this college
-    $lastRecord = Allocate::where('college_id', $request->college_id)
-                          ->orderBy('batch_number', 'DESC')
-                          ->first();
-
-    if ($lastRecord) {
-        $batchNumber = $lastRecord->batch_number + 1;
-    } else {
-        $batchNumber = 1; // first batch for this college
-    }
-
-    // 🔥 Generate custom code
-    $collegecode = $collegeName . 'NMbatch-' . $batchNumber;
 
 
     Allocate::create([
@@ -79,8 +93,8 @@ class AllocateController extends Controller
         'from_date'     => $request->from_date,
         'to_date'       => $request->to_date,
         'description'   => $request->description,
-         'batch_number'  => $batchNumber,
-        'college_code'   => $collegecode,
+        'batch_name'    => $request->batch_name,
+
     ]);
 
 

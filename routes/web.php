@@ -107,6 +107,10 @@ Route::get('/allocate/{id}/edit', [AllocateController::class, 'edit'])->name('al
 Route::put('/allocate/{id}', [AllocateController::class, 'update'])->name('allocate.update');
 Route::delete('/allocate/{id}', [AllocateController::class, 'destroy'])->name('allocate.destroy');
 
+Route::get('/get-batches/{college_id}', [AllocateController::class, 'getBatches']);
+Route::get('/get-batch-info/{batch}', [AllocateController::class, 'getBatchInfo']);
+
+
 
 
 
@@ -126,3 +130,13 @@ Route::post('/trainer/punch-out', [AttendanceController::class, 'punchOut'])->na
 Route::get('/trainer/calendar', [AttendanceController::class, 'calendar'])->name('trainer.calendar');
 // Work Module
 Route::get('/trainer/work', [TrainerController::class, 'work'])->name('trainer.work');
+Route::get('/student/attendance', [TrainerController::class, 'student_attendance'])->name('student.attendance');
+
+Route::get('/get-batch-details', [TrainerController::class, 'getBatchDetails']);
+Route::get('/get-batch-students', [TrainerController::class, 'getBatchStudents']);
+
+Route::post('/attendance/store', [TrainerController::class, 'store_student'])
+    ->name('attendance.store');
+
+
+

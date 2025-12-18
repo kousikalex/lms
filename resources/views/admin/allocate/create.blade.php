@@ -519,23 +519,6 @@
                         </div>
                     @endif
 
-                    {{-- College Dropdown --}}
-                    <div class="col-md-6">
-                        <label class="form-label">Select College</label>
-                        <select name="college_id" class="form-control @error('college_id') is-invalid @enderror">
-                            <option value="">-- Select College --</option>
-                            @foreach ($college as $collegeItem)
-                                <option value="{{ $collegeItem->id }}"
-                                    {{ old('college_id') == $collegeItem->id ? 'selected' : '' }}>
-                                    {{ $collegeItem->collegename }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('college_id')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
-
                     {{-- Course Dropdown --}}
                     <div class="col-md-6">
                         <label class="form-label">Select Course</label>
@@ -553,55 +536,62 @@
                         @enderror
                     </div>
 
-                    {{-- Department --}}
+                    {{-- College Dropdown --}}
                     <div class="col-md-6">
-                        <label class="form-label">Select Department</label>
-                        <select name="department_id" class="form-control @error('department_id') is-invalid @enderror">
-                            <option value="">-- Select Department --</option>
-                            @foreach ($department as $depart)
-                                <option value="{{ $depart->id }}"
-                                    {{ old('department_id') == $depart->id ? 'selected' : '' }}>
-                                    {{ $depart->name }}
+                        <label class="form-label">Select College</label>
+                        <select name="college_id" class="form-control @error('college_id') is-invalid @enderror">
+                            <option value="">-- Select College --</option>
+                            @foreach ($college as $collegeItem)
+                                <option value="{{ $collegeItem->id }}"
+                                    {{ old('college_id') == $collegeItem->id ? 'selected' : '' }}>
+                                    {{ $collegeItem->collegename }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('department_id')
+                        @error('college_id')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Select Batch</label>
+                        <select name="batch_number" id="batch_number" class="form-control">
+                            <option value="">-- Select Batch --</option>
+                        </select>
+                        <input type="hidden" id="batch_name" name="batch_name">
+
+                    </div>
+
+
+
+
+                    {{-- Department --}}
+                    <div class="col-md-6">
+                        <label class="form-label">Department</label>
+                        <input type="text" id="department_name" class="form-control" readonly>
+
+                        <!-- Hidden field to store ID -->
+                        <input type="hidden" id="department_id" name="department_id">
                     </div>
 
                     {{-- Year --}}
                     <div class="col-md-6">
-                        <label class="form-label">Select Year</label>
-                        <select name="year_id" class="form-control @error('year_id') is-invalid @enderror">
-                            <option value="">-- Select Year --</option>
-                            @foreach ($year as $years)
-                                <option value="{{ $years->id }}" {{ old('year_id') == $years->id ? 'selected' : '' }}>
-                                    {{ $years->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('year_id')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
+                        <label class="form-label">Year</label>
+                        <input type="text" id="year_name" class="form-control" readonly>
+
+                        <!-- Hidden field to store ID -->
+                        <input type="hidden" id="year_id" name="year_id">
                     </div>
 
                     {{-- Section --}}
                     <div class="col-md-6">
-                        <label class="form-label">Select Section</label>
-                        <select name="section_id" class="form-control @error('section_id') is-invalid @enderror">
-                            <option value="">-- Select Section --</option>
-                            @foreach ($section as $sections)
-                                <option value="{{ $sections->id }}"
-                                    {{ old('section_id') == $sections->id ? 'selected' : '' }}>
-                                    {{ $sections->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('section_id')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
+                        <label class="form-label">Section</label>
+                        <input type="text" id="section_name" class="form-control" readonly>
+
+                        <!-- Hidden field to store ID -->
+                        <input type="hidden" id="section_id" name="section_id">
                     </div>
+
+
 
                     {{-- Trainer --}}
                     <div class="col-md-6">
@@ -678,6 +668,66 @@
             </div>
         </footer>
     </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // When user selects a college → load batch numbers
+        $("select[name='college_id']").change(function() {
+
+            let collegeID = $(this).val();
+
+            $("#batch_number").html('<option>Loading...</option>');
+
+            // Reset fields
+            $("#department_name").val('');
+            $("#year_name").val('');
+            $("#section_name").val('');
+
+            $("#department_id").val('');
+            $("#year_id").val('');
+            $("#section_id").val('');
+
+            $.get("/get-batches/" + collegeID, function(response) {
+
+                $("#batch_number").html('<option value="">-- Select Batch --</option>');
+
+                response.forEach(function(batch) {
+                    $("#batch_number").append(
+                        `<option value="${batch.batch_number}">${batch.batch_number}</option>`
+                    );
+                });
+
+            });
+
+        });
+
+        // When batch is selected → auto-fill department, year, section
+        $("#batch_number").change(function() {
+
+            let batch = $(this).val();
+
+            $.get("/get-batch-info/" + batch, function(data) {
+
+                // Fill names
+                $("#department_name").val(data.department_name);
+                $("#year_name").val(data.year_name);
+                $("#section_name").val(data.section_name);
+
+                // Fill IDs (these are submitted to DB)
+                $("#department_id").val(data.department_id);
+                $("#year_id").val(data.year_id);
+                $("#section_id").val(data.section_id);
+
+                 $("#batch_name").val(data.batch_name);
+
+            });
+
+        });
+    </script>
+
+
+
+
 
 
 @endsection

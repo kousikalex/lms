@@ -19,7 +19,7 @@ class Allocate extends Model
         'description',
         'from_date',
         'to_date',
-        'batch_number',
+        'batch_name',
         'college_code'
     ];
 

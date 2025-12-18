@@ -11,13 +11,15 @@ class StudentsImport implements ToCollection, WithHeadingRow
     protected $collegeId;
     protected $courseId;
 
-    public function __construct($collegeId, $courseId,$departmentId, $yearId,$sectionId)
+    public function __construct($collegeId, $courseId,$departmentId, $yearId,$sectionId,$collegeCode)
     {
+        // dd($collegeCode);
         $this->collegeId = $collegeId;
         $this->courseId  = $courseId;
         $this->departmentId  = $departmentId;
         $this->yearId  = $yearId;
         $this->sectionId  = $sectionId;
+        $this->collegeCode  = $collegeCode;
     }
 
     /**
@@ -38,6 +40,7 @@ class StudentsImport implements ToCollection, WithHeadingRow
                 'department_id'       => $this->departmentId,
                 'section_id'       => $this->sectionId,
                 'year_id'       => $this->yearId,
+                'batch_number'       => $this->collegeCode,
                 'name'            => $row['name'],
                 'email'           => $row['email'],
                 'contact_number'  => $row['contact_number'] ?? null,

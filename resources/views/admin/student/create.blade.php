@@ -589,7 +589,7 @@
                         <select name="section_id" class="form-control @error('year_id') is-invalid @enderror">
                             <option value="">-- Select Section --</option>
                             @foreach ($section as $sections)
-                                <option value="{{ $years->id }}"
+                                <option value="{{ $sections->id }}"
                                     {{ old('section_id') == $sections->id ? 'selected' : '' }}>
                                     {{ $sections->name }}
                                 </option>
