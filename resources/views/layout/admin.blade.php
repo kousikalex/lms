@@ -58,7 +58,7 @@
 
 
 <body>
-
+{{-- @include('partials.admin-sidebar') --}}
     <aside class="sidebar">
         <button type="button" class="sidebar-close-btn">
             <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
@@ -76,6 +76,15 @@
             <ul class="sidebar-menu" id="sidebar-menu">
 
                 <li class="sidebar-menu-group-title">Menu</li>
+                
+                @if(auth()->check() && auth()->user()->role == 0)
+<li>
+    <a href="{{ route('superadmin.index') }}">
+        <iconify-icon icon="mdi:account-cog-outline" class="menu-icon"></iconify-icon>
+        <span>Admin</span>
+    </a>
+</li>
+@endif
 
                 {{-- Course Menu --}}
                 <li class="dropdown">

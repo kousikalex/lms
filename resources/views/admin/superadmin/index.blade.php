@@ -1,4 +1,4 @@
-@extends('layout.superadmin')
+@extends('layout.admin')
 
 @section('title', 'Admin Management')
 
@@ -539,7 +539,7 @@
                                                 <td>{{ $loop->iteration }}</td>
 
                                                 <td class="fw-semibold">
-                                                    {{ $admin->username }}
+                                                    {{ $admin->name }}
                                                 </td>
 
                                                 <td class="text-muted">

@@ -1,4 +1,4 @@
-@extends('layout.superadmin')
+@extends('layout.admin')
 
 @section('title', 'Admin Management')
 
@@ -521,10 +521,10 @@
                         <!-- Username -->
                         <div class="mb-3">
                             <label class="form-label">Username</label>
-                            <input type="text" name="username"
+                            <input type="text" name="name"
                                 class="form-control"
                                 placeholder="Enter Username"
-                                value="{{ old('username') }}">
+                                value="{{ old('name') }}">
                         </div>
 
                         <!-- Email -->

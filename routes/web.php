@@ -24,28 +24,37 @@ use App\Http\Controllers\AdminAuthController;
 // });
 
 // LOGIN
+<<<<<<< Updated upstream
 Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AdminAuthController::class, 'login'])->name('login.submit');
+=======
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AdminAuthController::class, 'login'])->name('login.submit');
+});
+
+>>>>>>> Stashed changes
 Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 
 /* SUPERADMIN */
-Route::middleware(['auth:admin', 'role:superadmin'])
+Route::middleware(['auth', 'role:0'])
     ->prefix('superadmin')
     ->group(function () {
 
-        Route::get('/admins', [SuperAdminController::class, 'index'])->name('superadmin.index');
-        Route::get('/admins/create', [SuperAdminController::class, 'create'])->name('superadmin.create');
-        Route::post('/admins', [SuperAdminController::class, 'store'])->name('superadmin.store');
-        Route::get('/admins/{id}/edit', [SuperAdminController::class, 'edit'])->name('superadmin.edit');
-        Route::put('/admins/{id}', [SuperAdminController::class, 'update'])->name('superadmin.update');
-        Route::delete('/admins/{id}', [SuperAdminController::class, 'destroy'])->name('superadmin.destroy');
+    Route::get('/admins', [SuperAdminController::class, 'index'])->name('superadmin.index');
+    Route::get('/admins/create', [SuperAdminController::class, 'create'])->name('superadmin.create');
+    Route::post('/admins', [SuperAdminController::class, 'store'])->name('superadmin.store');
+    Route::get('/admins/{id}/edit', [SuperAdminController::class, 'edit'])->name('superadmin.edit');
+    Route::put('/admins/{id}', [SuperAdminController::class, 'update'])->name('superadmin.update');
+    Route::delete('/admins/{id}', [SuperAdminController::class, 'destroy'])->name('superadmin.destroy');
 });
 
 /* ADMIN */
-Route::middleware(['auth:admin', 'role:admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 });
 
+Route::middleware(['auth', 'role:0,1'])->group(function () {
 
 // Trainer Routes
 Route::get('/trainer/index', [TrainerController::class, 'index'])->name('trainer.index');
@@ -110,7 +119,7 @@ Route::delete('/allocate/{id}', [AllocateController::class, 'destroy'])->name('a
 Route::get('/get-batches/{college_id}', [AllocateController::class, 'getBatches']);
 Route::get('/get-batch-info/{batch}', [AllocateController::class, 'getBatchInfo']);
 
-
+});
 
 
 

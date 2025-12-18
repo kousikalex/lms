@@ -3,7 +3,7 @@
 // app/Http/Controllers/SuperAdminController.php
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,7 +11,7 @@ class SuperAdminController extends Controller
 {
     public function index()
     {
-        $admins = Admin::all();
+        $admins = User::all();
         return view('admin.superadmin.index', compact('admins'));
     }
 
@@ -23,16 +23,16 @@ class SuperAdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'username' => 'required',
-            'email' => 'required|email|unique:admins,email',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
         ]);
 
-        Admin::create([
-            'username' => $request->username,
+        User::create([
+            'name' => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'role'     => 'admin'
+            'role'     => '1'
         ]);
 
         return redirect()->route('superadmin.index')->with('success', 'Admin created successfully');
@@ -40,16 +40,16 @@ class SuperAdminController extends Controller
 
     public function edit($id)
     {
-        $admin = Admin::findOrFail($id);
+        $admin = User::findOrFail($id);
         return view('admin.superadmin.edit', compact('admin'));
     }
 
     public function update(Request $request, $id)
     {
-        $admin = Admin::findOrFail($id);
+        $admin = User::findOrFail($id);
 
         $admin->update([
-            'username' => $request->username,
+            'name' => $request->name,
             'email'    => $request->email,
         ]);
 
@@ -58,7 +58,7 @@ class SuperAdminController extends Controller
 
     public function destroy($id)
     {
-        Admin::findOrFail($id)->delete();
+        User::findOrFail($id)->delete();
         return redirect()->route('superadmin.index')->with('success', 'Admin deleted successfully');
     }
 }
