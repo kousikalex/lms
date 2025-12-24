@@ -35,7 +35,7 @@ class SuperAdminController extends Controller
             'role'     => '1'
         ]);
 
-        return redirect()->route('superadmin.index')->with('success', 'Admin created successfully');
+        return redirect()->route('superadmin.index')->with('message', 'Admin created successfully')->with('type', 'success');
     }
 
     public function edit($id)
@@ -53,12 +53,14 @@ class SuperAdminController extends Controller
             'email'    => $request->email,
         ]);
 
-        return redirect()->route('superadmin.index')->with('success', 'Admin updated successfully');
+        return redirect()->route('superadmin.index')->with('message', 'Admin updated successfully')->with('type', 'warning');
     }
 
     public function destroy($id)
     {
         User::findOrFail($id)->delete();
-        return redirect()->route('superadmin.index')->with('success', 'Admin deleted successfully');
+        return redirect()->route('superadmin.index')
+    ->with('message', 'Admin deleted successfully')
+    ->with('type', 'danger');
     }
 }

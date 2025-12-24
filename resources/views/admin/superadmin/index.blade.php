@@ -3,7 +3,25 @@
 @section('title', 'Admin Management')
 
 @section('content')
+<style>
 
+/* Small title */
+.swal-small-title {
+    font-size: 16px !important;
+    margin-top: 5px !important;
+}
+
+/* Small text */
+.swal-small-text {
+    font-size: 13px !important;
+}
+
+/* Button alignment */
+.swal-actions {
+    margin-top: 10px !important;
+}
+
+</style>
     <main class="dashboard-main">
         <div class="navbar-header">
             <div class="row align-items-center justify-content-between">
@@ -548,25 +566,26 @@
 
                                                 <td class="">
                                                     <a href="{{ route('superadmin.edit', $admin->id) }}"
-                                                        class="btn btn-sm btn-primary me-2 px-3">
+                                                        class="btn btn-sm btn-primary" >
                                                         Edit
                                                     </a>
 
-                                                    <form action="{{ route('superadmin.destroy', $admin->id) }}"
-                                                        method="POST" class="d-inline">
+                                                    <form id="delete-form-{{ $admin->id }}"
+                                                        action="{{ route('superadmin.destroy', $admin->id) }}"
+                                                        method="POST"
+                                                        style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
 
-                                                        <button class="btn btn-sm btn-danger px-3"
-                                                            onclick="return confirm('Delete this admin?')">
+                                                        <button type="button"
+                                                                class="btn btn-danger btn-sm delete-btn" 
+                                                                 data-id="{{ $admin->id }}">
                                                             Delete
                                                         </button>
-                                                    </form>
+                                                    </form>   
                                                 </td>
                                             </tr>
                                         @endforeach
-
-
                                     </tbody>
                                 </table>
 
@@ -576,6 +595,50 @@
                     </div>
                 </div>
             </div>
-    </main>
 
+            
+    </main>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            confirmDelete(this.dataset.id);
+        });
+    });
+});
+function confirmDelete(id) {
+    Swal.fire({
+        title: 'Delete?',
+        text: 'This action cannot be undone!',
+        // icon: 'warning',
+        width: '260px',
+        padding: '0.8rem',
+
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete',
+        cancelButtonText: 'Cancel',
+
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+
+        customClass: {
+            popup: 'swal-clean-popup',
+            icon: 'swal-small-icon',
+            title: 'swal-small-title',
+            htmlContainer: 'swal-small-text',
+            actions: 'swal-actions',
+            confirmButton: 'btn btn-danger btn-sm me-2',
+            cancelButton: 'btn btn-secondary btn-sm'
+        }, 
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-form-' + id).submit();
+        }
+    });
+}
+</script>
 @endsection

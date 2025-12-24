@@ -41,9 +41,8 @@ public function store(Request $request)
         'description' => $request->description,
     ]);
 
-    return redirect()->route('subcourse.index')->with('success', 'Sub-Course added successfully!');
+    return redirect()->route('subcourse.index')->with('message', 'Sub-Course added successfully!')->with('type', 'success');
 }
-
 
 public function edit($id)
 {
@@ -86,7 +85,7 @@ public function update(Request $request, $id)
         'image'       => $imagePath,
         'description' => $request->description,
     ]);
-    return redirect()->route('course.index')->with('success', 'Trainer updated successfully!');
+    return redirect()->route('course.index')->with('message', 'Trainer updated successfully!')->with('type', 'warning');
 }
 
 
@@ -104,7 +103,7 @@ public function destroy($id)
 
     $subcourse->delete();
 
-    return redirect()->route('course.index')->with('success', 'Trainer deleted successfully');
+    return redirect()->route('course.index')->with('message', 'Trainer deleted successfully')->with('type', 'danger');
 }
 
 

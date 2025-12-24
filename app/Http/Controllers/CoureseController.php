@@ -41,7 +41,7 @@ public function store(Request $request)
         'description' => $request->description,
     ]);
 
-    return redirect()->route('course.index')->with('success', 'Course added successfully!');
+    return redirect()->route('course.index')->with('message', 'Course added successfully!')->with('type', 'success');
 }
 
 
@@ -88,7 +88,7 @@ public function update(Request $request, $id)
 
          ]);
 
-    return redirect()->route('course.index')->with('success', 'Trainer updated successfully!');
+    return redirect()->route('course.index')->with('message', 'Trainer updated successfully!')->with('type', 'warning');
 }
 
 
@@ -106,7 +106,7 @@ public function destroy($id)
 
     $trainer->delete();
 
-    return redirect()->route('course.index')->with('success', 'Trainer deleted successfully');
+    return redirect()->route('course.index')->with('message', 'Trainer deleted successfully')->with('type', 'danger');
 }
 
 

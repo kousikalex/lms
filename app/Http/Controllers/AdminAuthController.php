@@ -25,11 +25,13 @@ class AdminAuthController extends Controller
 
         // 🔐 ROLE BASED REDIRECT (FROM DB)
         if ($user->role == 0) {
-            return redirect()->route('superadmin.index');
+             return redirect()->route('superadmin.index')
+        ->with('success', 'Login successful! Welcome back SuperAdmin 🎉');
         }
 
         if ($user->role == 1) {
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard')
+        ->with('success', "Login successful! Welcome back {$user->name} 🎉");
         }
 
         // fallback
@@ -51,6 +53,7 @@ class AdminAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+          return redirect()->route('login')
+        ->with('success', 'You have been logged out successfully 👋');
     }
 }

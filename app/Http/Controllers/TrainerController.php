@@ -58,7 +58,7 @@ class TrainerController extends Controller
         'file_upload' => $filePath,
     ]);
 
-    return redirect()->route('trainer.index')->with('success', 'Trainer added successfully!');
+    return redirect()->route('trainer.index')->with('message', 'Trainer added successfully!')->with('type', 'success');
 }
 
 public function edit($id)
@@ -109,7 +109,7 @@ public function update(Request $request, $id)
         'file_upload' => $filePath,
     ]);
 
-    return redirect()->route('trainer.index')->with('success', 'Trainer updated successfully!');
+    return redirect()->route('trainer.index')->with('message', 'Trainer updated successfully!')->with('type', 'warning');
 }
 
 
@@ -127,7 +127,7 @@ public function destroy($id)
 
     $trainer->delete();
 
-    return redirect()->route('trainer.index')->with('success', 'Trainer deleted successfully');
+    return redirect()->route('trainer.index')->with('message', 'Trainer deleted successfully')->with('type', 'danger');
 }
 
 

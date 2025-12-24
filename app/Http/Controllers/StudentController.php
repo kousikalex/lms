@@ -71,7 +71,7 @@ class StudentController extends Controller
         new StudentsImport($request->college_id, $request->course_id,$request->department_id, $request->year_id, $request->section_id,$collegecode),
         $request->file('students_file')
     );
-        return redirect()->route('student.index')->with('success', 'College added successfully!');
+        return redirect()->route('student.index')->with('message', 'College added successfully!')->with('type', 'success');
     }
 
 
@@ -122,7 +122,7 @@ public function update(Request $request, $id)
     ]);
 
     return redirect()->route('student.index')
-                     ->with('success', 'Student Updated Successfully!');
+                     ->with('message', 'Student Updated Successfully!')->with('type', 'warning');
 }
 
 
@@ -141,6 +141,6 @@ public function destroy($id)
 
     $student->delete();
 
-    return redirect()->route('student.index')->with('success', 'Trainer deleted successfully');
+    return redirect()->route('student.index')->with('message', 'Trainer deleted successfully')->with('type', 'danger');
 }
 }

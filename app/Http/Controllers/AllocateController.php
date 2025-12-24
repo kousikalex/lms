@@ -99,7 +99,7 @@ public function getBatchInfo($batch)
 
 
     return redirect()->route('allocate.index')
-                     ->with('success', 'Student details added successfully!');
+                     ->with('message', 'Student details added successfully!')->with('type', 'success');
 }
 
 
@@ -154,7 +154,7 @@ public function update(Request $request, $id)
     ]);
 
     return redirect()->route('allocate.index')
-                     ->with('success', 'Allocate details updated successfully!');
+                     ->with('message', 'Allocate details updated successfully!')->with('type', 'warning');
 }
 
 
@@ -172,6 +172,6 @@ public function destroy($id)
 
     $student->delete();
 
-    return redirect()->route('student.index')->with('success', 'Trainer deleted successfully');
+    return redirect()->route('student.index')->with('message', 'Trainer deleted successfully')->with('type', 'danger');
 }
 }

@@ -53,7 +53,7 @@ class CollegeController extends Controller
             'description'      => $request->description,
         ]);
 
-        return redirect()->route('college.index')->with('success', 'College added successfully!');
+        return redirect()->route('college.index')->with('message', 'College added successfully!')->with('type', 'success');
     }
 
 
@@ -106,7 +106,7 @@ public function update(Request $request, $id)
         'description'      => $request->description,
     ]);
 
-    return redirect()->route('college.index')->with('success', 'College updated successfully!');
+    return redirect()->route('college.index')->with('message', 'College updated successfully!')->with('type', 'warning');
 }
 
 
@@ -124,6 +124,6 @@ public function destroy($id)
 
     $College->delete();
 
-    return redirect()->route('course.index')->with('success', 'Trainer deleted successfully');
+    return redirect()->route('course.index')->with('message', 'Trainer deleted successfully')->with('type', 'danger');
 }
 }
