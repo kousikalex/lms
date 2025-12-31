@@ -142,3 +142,5 @@ Route::post('/attendance/store', [TrainerController::class, 'store_student'])
 
 
 
+// student
+Route::post('/api/studentlogin', [UserController::class, 'studentLogin'])->name('student');
