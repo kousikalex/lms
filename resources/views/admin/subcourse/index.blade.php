@@ -974,6 +974,24 @@
                                                 class="btn btn-sm btn-primary"
                                                 >Edit</a
                                             >
+                                            <!-- PDF Upload Button -->
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-warning"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#pdfModal{{ $item->id }}"
+                                            >
+                                                Upload PDF
+                                            </button>
+                                            @if ($item->pdf)
+                                            <a
+                                                href="{{ asset('storage/subcourse_pdfs/'.$item->pdf) }}"
+                                                target="_blank"
+                                                class="btn btn-sm btn-info"
+                                            >
+                                                View PDF
+                                            </a>
+                                            @endif
 
                                             <form
                                                 id="delete-form-{{ $item->id }}"
@@ -1112,6 +1130,50 @@
             </div>
         </div>
     </footer>
+
+    <!-- pdf upload -->
+    <div class="modal fade" id="pdfModal{{ $item->id }}" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <form
+                action="{{ route('subcourse.uploadPdf', $item->id) }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+                @csrf
+
+                <div class="modal-content">
+                    <div class="modal-header py-2">
+                        <h6 class="modal-title">Upload PDF</h6>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                        ></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <input
+                            type="file"
+                            name="pdf"
+                            class="form-control"
+                            accept="application/pdf"
+                            required
+                        />
+                    </div>
+
+                    <div class="modal-footer py-2">
+                        <button
+                            class="btn btn-sm btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Cancel
+                        </button>
+                        <button class="btn btn-sm btn-primary">Upload</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </main>
 
 @endsection @section('scripts')
@@ -1153,6 +1215,14 @@
                 document.getElementById("delete-form-" + id).submit();
             }
         });
+    }
+
+    // pdf upload
+    function openPdfModal(id) {
+        const form = document.getElementById("pdfForm");
+        form.action = `/subcourse/${id}/upload-pdf`;
+
+        new bootstrap.Modal(document.getElementById("pdfModal")).show();
     }
 </script>
 @endsection

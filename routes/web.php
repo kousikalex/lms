@@ -78,6 +78,8 @@ Route::post('/subcourse/store', [subcoureseController::class, 'store'])->name('s
 Route::get('/subcourse/{id}/edit', [subcoureseController::class, 'edit'])->name('subcourse.edit');
 Route::put('/subcourse/{id}', [subcoureseController::class, 'update'])->name('subcourse.update');
 Route::delete('/subcourse/{id}', [subcoureseController::class, 'destroy'])->name('subcourse.destroy');
+Route::post('/subcourse/{id}/upload-pdf', [subcoureseController::class, 'uploadPdf'])->name('subcourse.uploadPdf');
+
 
 // college Routes
 Route::get('/college/create', [CollegeController::class, 'create'])->name('college.create');

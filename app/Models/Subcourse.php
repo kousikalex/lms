@@ -12,6 +12,7 @@ class Subcourse extends Model
         "name",
         "image",
         "description",
+           'pdf', 
 
     ];
 

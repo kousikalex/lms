@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\SubCourse;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class subcoureseController extends Controller
 {
@@ -104,6 +105,41 @@ public function destroy($id)
     $subcourse->delete();
 
     return redirect()->route('course.index')->with('message', 'Trainer deleted successfully')->with('type', 'danger');
+}
+
+public function uploadPdf(Request $request, $id)
+{
+    $request->validate([
+        'pdf' => 'required|mimes:pdf|max:5120', // 5MB
+    ]);
+
+    $subcourse = Subcourse::findOrFail($id);
+
+    // Delete old PDF if exists
+    if ($subcourse->pdf && Storage::disk('public')->exists('subcourse_pdfs/' . $subcourse->pdf)) {
+        Storage::disk('public')->delete('subcourse_pdfs/' . $subcourse->pdf);
+    }
+
+    $file = $request->file('pdf');
+
+    // ✅ Keep original PDF name (safe version)
+    $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+    $extension = $file->getClientOriginalExtension();
+
+    $fileName = $originalName . '_' . time() . '.' . $extension;
+
+    // Store in storage/app/public/subcourse_pdfs
+    $file->storeAs('subcourse_pdfs', $fileName, 'public');
+
+    // Save PDF name in DB
+    $subcourse->update([
+        'pdf' => $fileName,
+    ]);
+
+    return back()->with([
+        'message' => 'PDF uploaded successfully',
+        'type' => 'success'
+    ]);
 }
 
 
